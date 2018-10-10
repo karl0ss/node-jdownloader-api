@@ -265,3 +265,22 @@ exports.queryPackages = (deviceId, packagesIds) => {
       });
   });
 };
+
+exports.cleanUp = (deviceId, packageIds, action, mode, selection) => {
+  const query = `?sessiontoken=${encodeURI(__sessionToken)}&selectionType=2&action=3&mode=0`;
+  const params = [
+    [], 
+    packageIds || [], 
+    action || "DELETE_FINISHED", 
+    mode || "REMOVE_LINKS_AND_DELETE_FILES", 
+    selection || "SELECTED"
+  ]; 
+  return new Promise((resolve, rejected) => {
+    callAction('/downloadsV2/cleanup', deviceId, params)
+      .then((val) => {
+        resolve(val);
+      }).catch((error) => {
+        rejected(error);
+      });
+  });
+};
